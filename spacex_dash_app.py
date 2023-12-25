@@ -14,10 +14,11 @@ min_payload = spacex_df['Payload Mass (kg)'].min()
 app = dash.Dash(__name__)
 server = app.server
 
-uniquelaunchsites = spacex_df['Launch Site'].unique().tolist()
+unique_launchsites = spacex_df['Launch Site'].unique().tolist()
 lsites = []
+
 lsites.append({'label': 'All Sites', 'value': 'All Sites'})
-for site in uniquelaunchsites:
+for site in unique_launchsites:
  lsites.append({'label': site, 'value': site})
 
 
@@ -33,10 +34,10 @@ app.layout = html.Div(children=[html.H1('SpaceX Launch Records Dashboard',
                                 html.Br(),
 
 
-                                html.Div(dcc.Graph(id='success-pie-chart')),
+                                html.Div(dcc.Graph(id='success-rate-pie-chart')),
                                 html.Br(),
 
-                                html.P("Payload range (Kg):"),
+                                html.P("Payload range (Kg)"),
 
                                 dcc.RangeSlider(
                                     id='payload_slider',
@@ -71,10 +72,10 @@ app.layout = html.Div(children=[html.H1('SpaceX Launch Records Dashboard',
 def update_graph(site_dropdown):
     if (site_dropdown == 'All Sites'):
         df  = spacex_df[spacex_df['class'] == 1]
-        fig = px.pie(df, names = 'Launch Site',hole=.3,title = 'Total Success Launches By all sites')
+        fig = px.pie(df, names = 'Launch Site',hole=.3,title = 'Total Successful Launches By all sites')
     else:
         df  = spacex_df.loc[spacex_df['Launch Site'] == site_dropdown]
-        fig = px.pie(df, names = 'class',hole=.3,title = 'Total Success Launches for site '+site_dropdown)
+        fig = px.pie(df, names = 'class',hole=.3,title = 'Total Successful Launches for site '+site_dropdown)
     return fig
 
 @app.callback(
